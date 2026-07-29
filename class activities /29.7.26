@@ -1,0 +1,48 @@
+https://colab.research.google.com/notebooks/intro.ipynb#scrollTo=k9qv7GB_PJFg
+
+from collections import defaultdict
+
+corpus = [
+    "I like NLP",
+    "I like Python"
+]
+
+words = []
+for sentence in corpus:
+    words.extend(sentence.split())
+
+vocab = sorted(set(words))
+V = len(vocab)
+
+unigram = defaultdict(int)
+for word in words:
+    unigram[word] += 1
+
+bigram = defaultdict(int)
+for sentence in corpus:
+    tokens = sentence.split()
+    for i in range(len(tokens) - 1):
+        bigram[(tokens[i], tokens[i + 1])] += 1
+
+previous_word = "like"
+next_word = "Python"
+
+count_bigram = bigram[(previous_word, next_word)]
+count_previous = unigram[previous_word]
+
+mle = count_bigram / count_previous
+laplace = (count_bigram + 1) / (count_previous + V)
+
+print("Vocabulary:", vocab)
+print("Vocabulary Size:", V)
+
+print("\nUnigram Counts:")
+for word, count in unigram.items():
+    print(word, ":", count)
+
+print("\nBigram Counts:")
+for pair, count in bigram.items():
+    print(pair, ":", count)
+
+print("\nMLE =", mle)
+print("Laplace =", round(laplace, 4))
