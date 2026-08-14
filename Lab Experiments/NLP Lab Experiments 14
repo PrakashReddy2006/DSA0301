@@ -1,0 +1,23 @@
+import nltk
+from nltk import CFG
+from nltk.parse import ChartParser
+
+grammar = CFG.fromstring("""
+S -> NP VP
+NP -> Det N
+VP -> V
+Det -> 'the'
+N -> 'boy' | 'girl' | 'boys' | 'girls'
+V -> 'runs' | 'run'
+""")
+
+parser = ChartParser(grammar)
+
+sentence = input("Enter sentence: ").lower().split()
+
+trees = list(parser.parse(sentence))
+
+if trees:
+    print("Sentence is grammatically valid.")
+else:
+    print("Sentence is not grammatically valid.")

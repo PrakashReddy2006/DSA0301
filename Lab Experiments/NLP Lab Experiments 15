@@ -1,0 +1,32 @@
+import nltk
+from nltk import PCFG
+from nltk.parse import ViterbiParser
+
+grammar = PCFG.fromstring("""
+S -> NP VP [1.0]
+NP -> Det N [0.6]
+NP -> 'john' [0.4]
+VP -> V NP [0.7]
+VP -> V [0.3]
+Det -> 'the' [1.0]
+N -> 'dog' [1.0]
+V -> 'sees' [0.5]
+V -> 'runs' [0.5]
+""")
+
+parser = ViterbiParser(grammar)
+
+sentence = input("Enter sentence: ").lower().split()
+
+try:
+    tree = next(parser.parse(sentence))
+
+    print("\nMost Probable Parse:")
+    print(tree)
+
+    print("\nProbability:", tree.prob())
+
+except StopIteration:
+    print("No valid parse found.")
+except ValueError as e:
+    print("Error:", e)
